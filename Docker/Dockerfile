@@ -1,7 +1,5 @@
 FROM ubuntu:18.04
 
-COPY ../src/ /opt/wolfdotsolar/
-
 # Install ImageMagick :
 RUN apt-get update && apt install -y imagemagick
 
@@ -20,3 +18,6 @@ RUN pip3 install planetary-system-stacker
 
 # Install OpenCV-Python :
 RUN pip3 install opencv-python opencv-python-headless
+
+# Copy wolfdotsolar pipeline helpers :
+COPY ../src/ /opt/wolfdotsolar/
