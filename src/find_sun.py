@@ -6,6 +6,8 @@
 # License : CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/  #
 ###########################################################################
 import cv2
+import argparse
+import os.path
 
 def find_disk(img, threshold=10):
     """Finds the center and radius of a single solar disk present in the supplied image.
@@ -47,15 +49,22 @@ def find_disk(img, threshold=10):
 
 
 if __name__ == "__main__":
-    image = cv2.imread("/imgs/_pss_sharp.png")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("imageFilePath")
+    args = parser.parse_args()
+
+    if os.path.isfile(args.imageFilePath) == False:
+        raise RuntimeError("File '%s' doesn't exist" %args.imageFilePath)
+
+    image = cv2.imread(args.imageFilePath)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     center, radius = find_disk(img=gray, threshold=100)
 
-    print("circle x,y: {},{}".format(center[0], center[1]))
-    print("circle radius: {}".format(radius))
+    print("Sun circle center x, y : {}, {}".format(center[0], center[1]))
+    print("Sun circle radius : {}".format(radius))
 
     # Output the original image with the detected disk superimposed
-    cv2.circle(image, center, radius, (0, 0, 255), 1)
-    cv2.rectangle(image, (center[0] - 2, center[1] - 2), (center[0] + 2, center[1] + 2), (0, 0, 255), -1)
-    cv2.imwrite("/imgs/_pss_sharp_super.png", image)
+    #cv2.circle(image, center, radius, (0, 0, 255), 1)
+    #cv2.rectangle(image, (center[0] - 2, center[1] - 2), (center[0] + 2, center[1] + 2), (0, 0, 255), -1)
+    #cv2.imwrite("/imgs/IMG_3234_super.JPG", image)
