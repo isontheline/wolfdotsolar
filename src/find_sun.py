@@ -50,7 +50,9 @@ def find_disk(img, threshold=10):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("imageFilePath")
+    parser.add_argument("imageFilePath", help="The input image file path to extract the sun position")
+    parser.add_argument("-s", "--superimposeFilePath", help="The output image file path where you want the detected disk superimposed on")
+    parser.add_argument("-t", "--threshold", help="Threshold of min pixel value to consider as part of the solar disk", type=int, default=50)
     args = parser.parse_args()
 
     if os.path.isfile(args.imageFilePath) == False:
@@ -59,12 +61,13 @@ if __name__ == "__main__":
     image = cv2.imread(args.imageFilePath)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    center, radius = find_disk(img=gray, threshold=100)
+    center, radius = find_disk(img=gray, threshold=args.threshold)
 
     print("Sun circle center x, y : {}, {}".format(center[0], center[1]))
     print("Sun circle radius : {}".format(radius))
 
     # Output the original image with the detected disk superimposed
-    #cv2.circle(image, center, radius, (0, 0, 255), 1)
-    #cv2.rectangle(image, (center[0] - 2, center[1] - 2), (center[0] + 2, center[1] + 2), (0, 0, 255), -1)
-    #cv2.imwrite("/imgs/IMG_3234_super.JPG", image)
+    if args.superimposeFilePath:
+        cv2.circle(image, center, radius, (0, 255, 0), 1)
+        cv2.rectangle(image, (center[0] - 2, center[1] - 2), (center[0] + 2, center[1] + 2), (0, 255, 0), -1)
+        cv2.imwrite(args.superimposeFilePath, image)
