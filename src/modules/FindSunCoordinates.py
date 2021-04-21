@@ -9,6 +9,12 @@ import cv2
 import argparse
 import os.path
 
+def find_disk_in_image_file(image_file, threshold=10):
+    image = cv2.imread(image_file)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    return find_disk(img=gray, threshold=threshold)
+
 def find_disk(img, threshold=10):
     """Finds the center and radius of a single solar disk present in the supplied image.
 
@@ -58,16 +64,14 @@ if __name__ == "__main__":
     if os.path.isfile(args.imageFilePath) == False:
         raise RuntimeError("File '%s' doesn't exist" %args.imageFilePath)
 
-    image = cv2.imread(args.imageFilePath)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-    center, radius = find_disk(img=gray, threshold=args.threshold)
+    center, radius = find_disk_in_image_file(image_file=args.imageFilePath, threshold=args.threshold)
 
     print("Sun circle center x, y : {}, {}".format(center[0], center[1]))
     print("Sun circle radius : {}".format(radius))
 
     # Output the original image with the detected disk superimposed
     if args.superimposeFilePath:
+        image = cv2.imread(args.imageFilePath)
         cv2.circle(image, center, radius, (0, 255, 0), 1)
         cv2.rectangle(image, (center[0] - 2, center[1] - 2), (center[0] + 2, center[1] + 2), (0, 255, 0), -1)
         cv2.imwrite(args.superimposeFilePath, image)
