@@ -55,7 +55,8 @@ for sun_coordinate in sun_coordinates:
     x = round(x_center - radius)
     y = round(y_center - radius)
     crop_img = img[y:y+radius*2, x:x+radius*2]
-    crop_img_path=os.path.join(job_path, os.path.basename(file_path))
+    crop_img_filename = os.path.splitext(os.path.basename(file_path))[0] + ".png"
+    crop_img_path = os.path.join(job_path, crop_img_filename)
     cv2.imwrite(crop_img_path, crop_img)
     progress_bar_crop.update(1)
 progress_bar_crop.colour = "green"
