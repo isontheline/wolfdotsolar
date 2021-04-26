@@ -22,6 +22,9 @@ RUN pip3 install opencv-python opencv-python-headless
 # Install tqdm :
 RUN pip3 install tqdm
 
+# Install Pillow / piexif :
+RUN pip3 install Pillow piexif
+
 # Setting up locales :
 RUN apt-get update && apt-get install -y locales && locale-gen en_US.UTF-8
 

@@ -3,7 +3,9 @@ import argparse
 import modules.FindSunCoordinates as FSC
 import cv2
 import os
+import piexif
 from tqdm import tqdm
+from PIL import Image
 
 parser = argparse.ArgumentParser()
 parser.add_argument("job_pathPattern", help="The directory pattern where your Sun pictures will be cropped from")
@@ -23,7 +25,7 @@ job_path=os.path.join(wds_path, "crop")
 if os.path.isdir(job_path) == False:
     os.makedirs(job_path)
 
-steps_labels = [ "Finding Sun Coordinates", "Cropping Sun Images" ]
+steps_labels = [ "Finding Sun Coordinates", "Cropping Sun Images", "Applying EXIF" ]
 max_label_length = max(len(step_label) for step_label in steps_labels)
 
 progress_bar_find = tqdm(total=len(filenames_list), desc=steps_labels[0].rjust(max_label_length, " "), unit="image", ascii=False, colour="blue")
@@ -35,6 +37,7 @@ progress_bar_crop.update(0)
 max_radius = 0
 sun_coordinates = []
 
+# Finding Sun Coordinates :
 for image_file in filenames_list:
     center, radius = FSC.find_disk_in_image_file(image_file=image_file, threshold=args.threshold)
     sun_coordinates.append({ "file": image_file, "center": center })
@@ -42,10 +45,10 @@ for image_file in filenames_list:
     progress_bar_find.update(1)
     if radius > max_radius:
         max_radius = radius
-
 progress_bar_find.colour = "green"
 progress_bar_find.set_postfix(None)
 
+# Cropping Sun Images :
 for sun_coordinate in sun_coordinates:
     file_path = sun_coordinate["file"]
     img = cv2.imread(file_path)
@@ -54,10 +57,19 @@ for sun_coordinate in sun_coordinates:
     y_center = sun_coordinate["center"][1]
     x = round(x_center - radius)
     y = round(y_center - radius)
+    # Cropping image :
     crop_img = img[y:y+radius*2, x:x+radius*2]
     crop_img_filename = os.path.splitext(os.path.basename(file_path))[0] + ".png"
     crop_img_path = os.path.join(job_path, crop_img_filename)
+    # Writing cropped image :
     cv2.imwrite(crop_img_path, crop_img)
+    # Copying EXIF data :
+    im_src = Image.open(file_path)
+    exif_dict = piexif.load(im_src.info["exif"])
+    exif_bytes = piexif.dump(exif_dict)
+    im_dst = Image.open(crop_img_path)
+    im_dst.save(crop_img_path, "png", exif=exif_bytes)
+    # Updating progress bar :
     progress_bar_crop.update(1)
 progress_bar_crop.colour = "green"
 
