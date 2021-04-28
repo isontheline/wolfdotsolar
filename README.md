@@ -2,11 +2,13 @@
 Helpers to improve Solar Observation Processing Pipeline
 
 ## Build
+```
 ./Docker/buildDockerImage.sh
+```
 
 ## Crop Sun Pictures
 ```
-docker run --rm -v /folder/with/sun/pictures/:/imgs isontheline/wolfdotsolar:latest python3 /opt/wolfdotsolar/crop_sun.py /imgs/*.JPG
+docker run --rm -v /folder/with/sun/pictures/:/imgs isontheline/wolfdotsolar:latest crop_sun /imgs/*.JPG
 ```
 
 ## Stack Sun Pictures
@@ -16,7 +18,7 @@ docker run --rm -v /folder/with/sun/pictures/wolfdotsolar/crop/:/imgs/ isontheli
 
 ## Unsharp Sun Pictures
 ```
-docker run --rm -v /folder/with/sun/pictures/wolfdotsolar/crop/:/imgs isontheline/wolfdotsolar:latest python3 /opt/wolfdotsolar/unsharp.py /imgs/_pss.png --amount=3 --sigma=3 --radius=100
+docker run --rm -v /folder/with/sun/pictures/wolfdotsolar/crop/:/imgs isontheline/wolfdotsolar:latest unsharp /imgs/_pss.png --amount=3 --sigma=3 --radius=100
 ```
 
 ## Example Result
