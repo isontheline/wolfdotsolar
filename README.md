@@ -19,5 +19,5 @@ docker run --rm -v /folder/with/sun/pictures/wolfdotsolar/crop/:/imgs/ isontheli
 docker run --rm -v /folder/with/sun/pictures/wolfdotsolar/crop/:/imgs isontheline/wolfdotsolar:latest python3 /opt/wolfdotsolar/unsharp.py /imgs/_pss.png --amount=3 --sigma=3 --radius=100
 ```
 
-## Exxample Result
+## Example Result
 ![Sun Cropped and Stacked with wolfdotsolar](/samples/sun-cropped-and-stacked-with-wolfdotsolar.jpg)
