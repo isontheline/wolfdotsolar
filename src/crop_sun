@@ -13,6 +13,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("job_pathPattern", help="The directory pattern where your Sun pictures will be cropped from")
 parser.add_argument("-t", "--threshold", help="Threshold of min pixel value to consider as part of the solar disk", type=int, default=50)
 parser.add_argument("-m", "--margin", help="Margin around the Solar Limb", type=int, default=50)
+parser.add_argument("-d", "--destination", help="Destination subfolder", default="wolfdotsolar")
 args = parser.parse_args()
 
 filenames_list = glob.glob(args.job_pathPattern)
@@ -21,8 +22,7 @@ if len(filenames_list) == 0:
     raise RuntimeError("Directory pattern '%s' doesn't return any files" %args.job_pathPattern)
 
 job_root_path=os.path.abspath(os.path.join(filenames_list[0], os.pardir))
-wds_path=os.path.join(job_root_path, "wolfdotsolar")
-job_path=os.path.join(wds_path, "crop")
+job_path=os.path.join(job_root_path, args.destination)
 
 if os.path.isdir(job_path) == False:
     os.makedirs(job_path)
