@@ -8,7 +8,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument("job_pathPattern", help="The directory pattern where your Sun pictures will be cropped and stacked from")
 parser.add_argument("--crop_threshold", help="Threshold of min pixel value to consider as part of the solar disk", type=int, default=50)
 parser.add_argument("--crop_margin", help="Margin around the Solar Limb", type=int, default=50)
-parser.add_argument("--stack_percent", help="Stack percent", type=int, default=100)
 parser.add_argument("--unsharp_radius", help="Unsharp radius", type=int, default=10)
 parser.add_argument("--unsharp_sigma", help="Unsharp sigma", type=int, default=4)
 parser.add_argument("--unsharp_amount", help="Unsharp amount", type=int, default=1)
@@ -25,11 +24,11 @@ pargs = ["/opt/wolfdotsolar/crop_sun", args.job_pathPattern]
 subprocess.call(pargs) 
 
 print("Stacking Solar Limb...")
-pargs = ["PlanetarySystemStacker", "/imgs/wolfdotsolar/", "--stack_percent=" + str(args.stack_percent)]
+pargs = ["/opt/wolfdotsolar/auto_stack", "/imgs/wolfdotsolar/", "/imgs/wolfdotsolar/stack.png", "--method=ECC"]
 subprocess.call(pargs)
 
 print("Unsharping Solar Limb...")
-pargs = ["/opt/wolfdotsolar/unsharp", "/imgs/wolfdotsolar/_pss.png", "--amount=3", "--sigma=3", "--radius=100"]
+pargs = ["/opt/wolfdotsolar/unsharp", "/imgs/wolfdotsolar/stack.png", "--amount=3", "--sigma=2", "--radius=100", "--threshold=0"]
 subprocess.call(pargs)
 
 print("Done.")
