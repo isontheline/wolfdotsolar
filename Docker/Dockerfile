@@ -1,20 +1,11 @@
 FROM ubuntu:18.04
 
-# Install ImageMagick :
-RUN apt-get update && apt install -y imagemagick
-
-# Install Python3 and PyQt5 required packages :
+# Install Python3 and libGL required packages :
 RUN apt-get update && apt-get install -y software-properties-common gcc && add-apt-repository -y ppa:deadsnakes/ppa
-RUN apt-get update && apt-get install -y python3.6 python3-distutils python3-pip python3-apt python3-pyqt5 libgl1-mesa-glx
+RUN apt-get update && apt-get install -y python3.6 python3-distutils python3-pip python3-apt libgl1-mesa-glx
 
 # Upgrade PIP to the latest version :
 RUN pip3 install --upgrade pip
-
-# Install PyQt5 :
-RUN pip3 install scikit-build PyQt5
-
-# Install PlanetarySystemStacker :
-RUN pip3 install planetary-system-stacker
 
 # Install OpenCV-Python :
 RUN pip3 install opencv-python opencv-python-headless
@@ -28,6 +19,9 @@ RUN pip3 install Pillow piexif
 # Install Wand :
 RUN apt-get update && apt-get install -y libmagickwand-dev
 RUN pip3 install Wand
+
+# Install focus-stack :
+RUN pip3 install focus-stack
 
 # Setting up locales :
 RUN apt-get update && apt-get install -y locales && locale-gen en_US.UTF-8
