@@ -23,7 +23,7 @@ docker run --rm -v /folder/with/sun/pictures/wolfdotsolar/crop/:/imgs isonthelin
 
 ## All in one cropnstack program
 ```
-docker run  --rm -v /folder/with/sun/pictures/:/imgs isontheline/wolfdotsolar:latest cropnstack /imgs/*.JPG
+docker run  --rm -v /folder/with/sun/pictures/:/imgs isontheline/wolfdotsolar:latest cropnstack "/imgs/*.JPG"
 ```
 
 ## Example Result
