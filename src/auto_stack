@@ -25,8 +25,18 @@ def stackImagesECC(file_list):
             first_image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
             stacked_image = image
         else:
+            # Specify the number of iterations.
+            number_of_iterations = 10;
+
+            # Specify the threshold of the increment
+            # in the correlation coefficient between two iterations
+            termination_eps = 1e-10;
+
+            # Define termination criteria
+            criteria = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, number_of_iterations,  termination_eps)
+
             # Estimate perspective transform
-            s, M = cv2.findTransformECC(cv2.cvtColor(image,cv2.COLOR_BGR2GRAY), first_image, M, cv2.MOTION_HOMOGRAPHY)
+            s, M = cv2.findTransformECC(cv2.cvtColor(image,cv2.COLOR_BGR2GRAY), first_image, M, cv2.MOTION_HOMOGRAPHY, criteria, inputMask=None, gaussFiltSize=1)
             w, h, _ = image.shape
             # Align image to first image
             image = cv2.warpPerspective(image, M, (h, w))
