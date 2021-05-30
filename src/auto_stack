@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
-##########################################################
-# This script is forked from the original work of maitek #
-# Author profile : https://github.com/maitek             #
-# Code : https://github.com/maitek/image_stacking        #
-# Date : October 5, 2017                                 #
-# License : MIT                                          #
-##########################################################
+###########################################################
+# This script was forked from the original work of maitek #
+# Author profile : https://github.com/maitek              #
+# Code : https://github.com/maitek/image_stacking         #
+# Date : October 5, 2017                                  #
+# License : MIT                                           #
+###########################################################
 import os
 import cv2
 import numpy as np
