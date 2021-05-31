@@ -2,8 +2,8 @@ name: buildx
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 06 * * *' # everyday at 06am
+  #schedule:
+  #  - cron: '0 06 * * *' # everyday at 06am
   pull_request:
     branches: master
   push:
@@ -13,7 +13,7 @@ on:
 
 jobs:
   buildx:
-    timeout-minutes: 30
+    timeout-minutes: 20
     runs-on: ubuntu-latest
     steps:
       -
