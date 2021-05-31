@@ -7,4 +7,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 cd "$DIR/.."
 
 # Buildling the Docker image for wolfdotsolar :
-docker build -t isontheline/wolfdotsolar:latest -f Docker/Dockerfile .
+docker build -t isontheline/wolfdotsolar:edge -f Docker/Dockerfile .

@@ -1,14 +1,14 @@
 # wolfdotsolar
 Solar Observation Processing Pipeline
 
-## 1. Build Docker Image
+## 1. Build Docker Image (optional)
 ```
 ./Docker/buildDockerImage.sh
 ```
 
 ## 2. Launch Crop & Stack Pipeline
 ```
-docker run --rm -v /folder/with/sun/pictures/:/imgs isontheline/wolfdotsolar:latest cropnstack "/imgs/*.JPG"
+docker run --rm -v /folder/with/sun/pictures/:/imgs isontheline/wolfdotsolar:edge cropnstack "/imgs/*.JPG"
 ```
 
 ## 3. Example Result
