@@ -12,6 +12,9 @@ docker run --rm -v /folder/with/sun/pictures/:/imgs isontheline/wolfdotsolar:edg
 ```
 
 ## 3. Examples of Results
-| Sunspots May 10, 2021 | Solar Eclipse June 10, 2021 |
-| --- | --- |
-| ![Sun Cropped and Stacked with wolfdotsolar](./samples/sun-cropped-and-stacked-with-wolfdotsolar.jpg) | ![Solar Eclipse June 10, 2021 at Arnac-Pompadour](./samples/solar-eclipse-20210610-0950-arnac-pompadour-france.jpg) |
+| Sunspots May 10, 2021 | Solar Eclipse June 10, 2021 | Sunspots September 5, 2021 |
+| --- | --- | --- |
+| ![Sun Cropped and Stacked with wolfdotsolar](./samples/sun-cropped-and-stacked-with-wolfdotsolar.jpg) | ![Solar Eclipse June 10, 2021 at Arnac-Pompadour](./samples/solar-eclipse-20210610-0950-arnac-pompadour-france.jpg) | ![September sunspots cropped and stacked with wolfdotsolar](./samples/september-sunspots-20210905_0920.jpg) |
+
+# Wolf.Solar
+Wolf.Solar is a continuous monitoring tool for solar activity. [Publish](https://wolf.solar) your observations and share them with the community
