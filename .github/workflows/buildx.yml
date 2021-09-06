@@ -1,8 +1,6 @@
 name: buildx
 on:
   workflow_dispatch:
-  #schedule:
-  #  - cron: '0 06 * * *' # everyday at 06am
   pull_request:
     branches: master
   push:
@@ -20,7 +18,7 @@ jobs:
         id: prepare
         run: |
           DOCKER_IMAGE=isontheline/wolfdotsolar
-          DOCKER_PLATFORMS=linux/amd64,linux/arm64,linux/386
+          DOCKER_PLATFORMS=linux/amd64,linux/arm64
           VERSION=edge
 
           if [[ $GITHUB_REF == refs/tags/* ]]; then
