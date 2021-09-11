@@ -11,29 +11,35 @@ import os
 import cv2
 import numpy as np
 from time import time
+from tqdm import tqdm
 
 # Align and stack images with ECC method
 # Slower but more accurate
 def stackImagesECC(file_list):
+    progress_bar_stack = tqdm(total=len(file_list), desc="Stacking Cropped Images (ECC Method)".ljust(40, " "), unit="image", ascii=False, colour="blue")
+    progress_bar_stack.update(0)
+
     M = np.eye(3, 3, dtype=np.float32)
 
     first_image = None
     stacked_image = None
 
     for file in file_list:
+        progress_bar_stack.set_postfix(file=file)
+        progress_bar_stack.update(1)
+
         image = cv2.imread(file,1).astype(np.float32) / 255
-        print(file)
         if first_image is None:
             # convert to gray scale floating point image
             first_image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
             stacked_image = image
         else:
             # Specify the number of iterations.
-            number_of_iterations = 10;
+            number_of_iterations = 10
 
             # Specify the threshold of the increment
             # in the correlation coefficient between two iterations
-            termination_eps = 1e-10;
+            termination_eps = 1e-10
 
             # Define termination criteria
             criteria = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, number_of_iterations,  termination_eps)
@@ -45,6 +51,10 @@ def stackImagesECC(file_list):
             image = cv2.warpPerspective(image, M, (h, w))
             stacked_image += image
 
+    progress_bar_stack.colour = "green"
+    progress_bar_stack.set_postfix(None)
+    progress_bar_stack.close()
+
     stacked_image /= len(file_list)
     stacked_image = (stacked_image*255).astype(np.uint8)
     return stacked_image
@@ -53,7 +63,9 @@ def stackImagesECC(file_list):
 # Align and stack images by matching ORB keypoints
 # Faster but less accurate
 def stackImagesKeypointMatching(file_list):
-
+    progress_bar_stack = tqdm(total=len(file_list), desc="Stacking Cropped Images (ORB Method)".ljust(40, " "), unit="image", ascii=False, colour="blue")
+    progress_bar_stack.update(0)
+    
     orb = cv2.ORB_create()
 
     # disable OpenCL to because of bug in ORB in OpenCV 3.1
@@ -64,7 +76,9 @@ def stackImagesKeypointMatching(file_list):
     first_kp = None
     first_des = None
     for file in file_list:
-        print(file)
+        progress_bar_stack.set_postfix(file=file)
+        progress_bar_stack.update(1)
+
         image = cv2.imread(file,1)
         imageF = image.astype(np.float32) / 255
 
@@ -97,6 +111,10 @@ def stackImagesKeypointMatching(file_list):
             imageF = cv2.warpPerspective(imageF, M, (h, w))
             stacked_image += imageF
 
+    progress_bar_stack.colour = "green"
+    progress_bar_stack.set_postfix(None)
+    progress_bar_stack.close()
+
     stacked_image /= len(file_list)
     stacked_image = (stacked_image*255).astype(np.uint8)
     return stacked_image
@@ -104,7 +122,6 @@ def stackImagesKeypointMatching(file_list):
 # ===== MAIN =====
 # Read all files in directory
 import argparse
-
 
 if __name__ == '__main__':
 
@@ -133,23 +150,14 @@ if __name__ == '__main__':
 
     if method == 'ECC':
         # Stack images using ECC method
-        description = "Stacking images using ECC method"
-        print(description)
         stacked_image = stackImagesECC(file_list)
-
     elif method == 'ORB':
         #Stack images using ORB keypoint method
-        description = "Stacking images using ORB method"
-        print(description)
         stacked_image = stackImagesKeypointMatching(file_list)
-
     else:
         print("ERROR: method {} not found!".format(method))
         exit()
 
-    print("Stacked {0} in {1} seconds".format(len(file_list), (time()-tic) ))
-
-    print("Saved {}".format(args.output_image))
     cv2.imwrite(str(args.output_image),stacked_image)
 
     # Show image
