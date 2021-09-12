@@ -67,10 +67,12 @@ for sun_coordinate in sun_coordinates:
     exif_bytes = piexif.dump(exif_dict)
     im_dst = Image.open(crop_img_path)
     im_dst.save(crop_img_path, "png", exif=exif_bytes)
+    # Setting creation / modification date on cropped image :
+    imageTimestamp = os.path.getmtime(file_path)
+    os.utime(crop_img_path, (imageTimestamp, imageTimestamp))
     # Updating progress bar :
     progress_bar_crop.set_postfix(file=file_path)
     progress_bar_crop.update(1)
 progress_bar_crop.colour = "green"
 progress_bar_crop.set_postfix(None)
-
 progress_bar_crop.close()

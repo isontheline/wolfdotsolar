@@ -32,6 +32,7 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 ENV PYTHONUNBUFFERED=1
+ENV TZ=UTC
 
 # Copy wolfdotsolar pipeline helpers :
 COPY ../src/ /opt/wolfdotsolar/
