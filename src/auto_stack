@@ -149,18 +149,24 @@ if __name__ == '__main__':
     tic = time()
 
     if method == 'ECC':
-        # Stack images using ECC method
+        # Stack images using ECC method :
         stacked_image = stackImagesECC(file_list)
     elif method == 'ORB':
-        #Stack images using ORB keypoint method
+        # Stack images using ORB keypoint method :
         stacked_image = stackImagesKeypointMatching(file_list)
     else:
         print("ERROR: method {} not found!".format(method))
         exit()
 
-    cv2.imwrite(str(args.output_image),stacked_image)
+    # Checking that parent directory exists :
+    parent_dir = os.path.abspath(os.path.join(args.output_image, os.pardir))
+    if not os.path.isdir(parent_dir):
+        os.makedirs(parent_dir)
 
-    # Show image
+    # Saving image :
+    cv2.imwrite(str(args.output_image), stacked_image)
+
+    # Show image :
     if args.show:
         cv2.imshow(description, stacked_image)
         cv2.waitKey(0)

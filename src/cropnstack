@@ -19,11 +19,11 @@ filenames_list = glob.glob(args.job_pathPattern)
 if len(filenames_list) == 0:
     raise RuntimeError("Directory pattern '%s' doesn't return any files" %args.job_pathPattern)
 
-pargs = ["/opt/wolfdotsolar/crop_sun", args.job_pathPattern]
-subprocess.call(pargs) 
+pargs = ["/opt/wolfdotsolar/crop_sun", "--destination=wolfdotsolar/crop", args.job_pathPattern]
+subprocess.run(pargs) 
 
-pargs = ["/opt/wolfdotsolar/auto_stack", "/imgs/wolfdotsolar/", "/imgs/wolfdotsolar/stack.png", "--method=ECC"]
-subprocess.call(pargs)
+pargs = ["/opt/wolfdotsolar/auto_stack", "/imgs/wolfdotsolar/crop/", "/imgs/wolfdotsolar/stack/stack.png", "--method=ECC"]
+subprocess.run(pargs)
 
-pargs = ["/opt/wolfdotsolar/unsharp", "/imgs/wolfdotsolar/stack.png", "--amount=3", "--sigma=2", "--radius=100", "--threshold=0"]
-subprocess.call(pargs)
+pargs = ["/opt/wolfdotsolar/unsharp", "/imgs/wolfdotsolar/stack/stack.png", "--amount=3", "--sigma=2", "--radius=100", "--threshold=0"]
+subprocess.run(pargs)
