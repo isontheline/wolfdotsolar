@@ -48,7 +48,7 @@ progress_bar_find.set_postfix(None)
 progress_bar_find.close()
 
 # Cropping Sun Images :
-progress_bar_crop = tqdm(total=len(filenames_list), position=1, desc="Cropping Sun Images".ljust(40, " "), ascii=False, colour="blue")
+progress_bar_crop = tqdm(total=len(filenames_list), position=1, desc="Cropping Sun Images".ljust(40, " "), unit="image", ascii=False, colour="blue")
 progress_bar_crop.update(0)
 for sun_coordinate in sun_coordinates:
     file_path = sun_coordinate["file"]
