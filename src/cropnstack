@@ -4,6 +4,7 @@ import glob
 import argparse
 import subprocess
 import modules.CropSun as CS
+import modules.AutoStack as AS
 
 parser = argparse.ArgumentParser()
 parser.add_argument("job_pathPattern", help="The directory pattern where your Sun pictures will be cropped and stacked from")
@@ -23,8 +24,8 @@ if len(filenames_list) == 0:
 # Center and crop Sun :
 CS.crop_sun_pictures(args.job_pathPattern, "wolfdotsolar/crop")
 
-pargs = ["/opt/wolfdotsolar/auto_stack", "/imgs/wolfdotsolar/crop/", "/imgs/wolfdotsolar/stack/stack.png", "--method=ECC"]
-subprocess.run(pargs)
+# Stacking pictures :
+AS.stack_pictures("/imgs/wolfdotsolar/crop/", "/imgs/wolfdotsolar/stack/stack.png", "ECC")
 
 pargs = ["/opt/wolfdotsolar/unsharp", "/imgs/wolfdotsolar/stack/stack.png", "--amount=3", "--sigma=2", "--radius=100", "--threshold=0"]
 subprocess.run(pargs)

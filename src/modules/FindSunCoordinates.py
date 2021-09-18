@@ -1,10 +1,10 @@
-############################################################################
-# This script was forked from the original work of LandingEllipse          #
-# Author profile : https://stackoverflow.com/users/5613422/landingellipse  #
-# Code : https://stackoverflow.com/a/43530769/8102448                      #
-# Date : April 20, 2017                                                    #
-# License : CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/   #
-############################################################################
+#####################################################################################
+# This script was forked from the original work of LandingEllipse                   #
+# Original Author profile : https://stackoverflow.com/users/5613422/landingellipse  #
+# Original Code : https://stackoverflow.com/a/43530769/8102448                      #
+# Original Date : April 20, 2017                                                    #
+# License : CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/            #
+#####################################################################################
 import cv2
 import argparse
 import os.path

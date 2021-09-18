@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 
-###########################################################
-# This script was forked from the original work of maitek #
-# Author profile : https://github.com/maitek              #
-# Code : https://github.com/maitek/image_stacking         #
-# Date : October 5, 2017                                  #
-# License : MIT                                           #
-###########################################################
+####################################################################
+# This script was forked from the original work of maitek          #
+# Original Author profile : https://github.com/maitek              #
+# Original Code : https://github.com/maitek/image_stacking         #
+# Original Date : October 5, 2017                                  #
+# License : MIT                                                    #
+####################################################################
 import os
 import cv2
 import numpy as np
 from time import time
 from tqdm import tqdm
+import argparse
 
 # Align and stack images with ECC method
 # Slower but more accurate
@@ -119,39 +120,27 @@ def stackImagesKeypointMatching(file_list):
     stacked_image = (stacked_image*255).astype(np.uint8)
     return stacked_image
 
-# ===== MAIN =====
-# Read all files in directory
-import argparse
-
-if __name__ == '__main__':
-
-    parser = argparse.ArgumentParser(description='')
-    parser.add_argument('input_dir', help='Input directory of images ()')
-    parser.add_argument('output_image', help='Output image name')
-    parser.add_argument('--method', help='Stacking method ORB (faster) or ECC (more precise)')
-    parser.add_argument('--show', help='Show result image',action='store_true')
-    args = parser.parse_args()
-
-    image_folder = args.input_dir
+def stack_pictures(input_dir, output_image, method="ECC"):
+    image_folder = input_dir
     if not os.path.exists(image_folder):
         print("ERROR {} not found!".format(image_folder))
         exit()
 
     file_list = os.listdir(image_folder)
     file_list = [os.path.join(image_folder, x)
-        for x in file_list if x.endswith(('.jpg', '.png','.bmp'))]
+        for x in file_list if x.endswith((".jpg", ".png"))]
 
-    if args.method is not None:
-        method = str(args.method)
+    if method is not None:
+        method = str(method)
     else:
-        method = 'KP'
+        method = "KP"
 
     tic = time()
 
-    if method == 'ECC':
+    if method == "ECC":
         # Stack images using ECC method :
         stacked_image = stackImagesECC(file_list)
-    elif method == 'ORB':
+    elif method == "ORB":
         # Stack images using ORB keypoint method :
         stacked_image = stackImagesKeypointMatching(file_list)
     else:
@@ -159,14 +148,17 @@ if __name__ == '__main__':
         exit()
 
     # Checking that parent directory exists :
-    parent_dir = os.path.abspath(os.path.join(args.output_image, os.pardir))
+    parent_dir = os.path.abspath(os.path.join(output_image, os.pardir))
     if not os.path.isdir(parent_dir):
         os.makedirs(parent_dir)
 
     # Saving image :
-    cv2.imwrite(str(args.output_image), stacked_image)
+    cv2.imwrite(str(output_image), stacked_image)
 
-    # Show image :
-    if args.show:
-        cv2.imshow(description, stacked_image)
-        cv2.waitKey(0)
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input_dir", help="Input directory of images ()")
+    parser.add_argument("output_image", help="Output image name")
+    parser.add_argument("--method", help="Stacking method ORB (faster) or ECC (more precise)", default="ECC")
+    args = parser.parse_args()
+    stack_pictures(args.input_dir, args.output_image, args.method)
