@@ -3,6 +3,7 @@
 import glob
 import argparse
 import subprocess
+import modules.CropSun as CS
 
 parser = argparse.ArgumentParser()
 parser.add_argument("job_pathPattern", help="The directory pattern where your Sun pictures will be cropped and stacked from")
@@ -19,8 +20,8 @@ filenames_list = glob.glob(args.job_pathPattern)
 if len(filenames_list) == 0:
     raise RuntimeError("Directory pattern '%s' doesn't return any files" %args.job_pathPattern)
 
-pargs = ["/opt/wolfdotsolar/crop_sun", "--destination=wolfdotsolar/crop", args.job_pathPattern]
-subprocess.run(pargs) 
+# Center and crop Sun :
+CS.crop_sun_pictures(args.job_pathPattern, "wolfdotsolar/crop")
 
 pargs = ["/opt/wolfdotsolar/auto_stack", "/imgs/wolfdotsolar/crop/", "/imgs/wolfdotsolar/stack/stack.png", "--method=ECC"]
 subprocess.run(pargs)
