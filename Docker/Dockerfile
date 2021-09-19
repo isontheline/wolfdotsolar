@@ -23,6 +23,9 @@ RUN pip3 install Wand
 # Install focus-stack :
 RUN pip3 install focus-stack
 
+# Install pytz :
+RUN pip3 install pytz
+
 # Setting up locales :
 RUN apt-get update && apt-get install -y locales && locale-gen en_US.UTF-8
 

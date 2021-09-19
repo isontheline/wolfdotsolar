@@ -77,7 +77,7 @@ def crop_sun_pictures(job_path_pattern, destination="wolfdotsolar", threshold=50
     progress_bar_crop.close()
 
     average_timestamp = int(sum(images_timestamps) / len(images_timestamps))
-    print(">>>" + str(average_timestamp))
+    return { "AverageTimestamp": average_timestamp }
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

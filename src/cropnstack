@@ -2,7 +2,8 @@
 
 import glob
 import argparse
-import subprocess
+import datetime
+import pytz
 import modules.CropSun as CropSun
 import modules.AutoStack as AutoStack
 import modules.Unsharp as Unsharp
@@ -15,6 +16,7 @@ parser.add_argument("--unsharp_radius", help="Unsharp radius", type=int, default
 parser.add_argument("--unsharp_sigma", help="Unsharp sigma", type=int, default=4)
 parser.add_argument("--unsharp_amount", help="Unsharp amount", type=int, default=1)
 parser.add_argument("--unsharp_threshold", help="Unsharp threshold", type=int, default=0)
+parser.add_argument("--timezone", help="Timezone used for date processing", default="UTC")
 args = parser.parse_args()
 
 filenames_list = glob.glob(args.job_pathPattern)
@@ -23,10 +25,14 @@ if len(filenames_list) == 0:
     raise RuntimeError("Directory pattern '%s' doesn't return any files" %args.job_pathPattern)
 
 # Center and crop Sun :
-CropSun.crop_sun_pictures(args.job_pathPattern, "wolfdotsolar/crop")
+cs_info = CropSun.crop_sun_pictures(args.job_pathPattern, "wolfdotsolar/crop")
 
 # Stacking pictures :
-AutoStack.stack_pictures("/imgs/wolfdotsolar/crop/", "/imgs/wolfdotsolar/stack/stack.png", "ECC")
+dt_average = datetime.datetime.fromtimestamp(cs_info["AverageTimestamp"], datetime.timezone.utc)
+dt_tz = pytz.timezone(args.timezone)
+dt_average_tz = dt_average.astimezone(dt_tz)
+stack_filename = dt_average_tz.strftime("%Y%m%d_%H%M") + ".png"
+AutoStack.stack_pictures("/imgs/wolfdotsolar/crop/", "/imgs/wolfdotsolar/stack/" + stack_filename, "ECC")
 
 # Unsharping picture :
-Unsharp.unsharp("/imgs/wolfdotsolar/stack/stack.png", 100, 2, 3, 0)
+Unsharp.unsharp("/imgs/wolfdotsolar/stack/" + stack_filename, 100, 2, 3, 0)
