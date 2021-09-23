@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 #####################################################################################
 # This script was forked from the original work of LandingEllipse                   #
 # Original Author profile : https://stackoverflow.com/users/5613422/landingellipse  #
