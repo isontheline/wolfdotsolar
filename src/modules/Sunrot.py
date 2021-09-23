@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
+import os
 import ephem
 import math
 import datetime
 import argparse
+from PIL import Image
 
 
 def parallactic_angle(latitude, longitude, datetime):
@@ -94,6 +96,7 @@ def solar_coordinates(datetime):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("image_file", help="The image to rotate")
     parser.add_argument(
         "-y", "--year", help="Year of observation", type=int, required=True)
     parser.add_argument(
@@ -111,7 +114,16 @@ if __name__ == "__main__":
     args = parser.parse_args()
     dt = datetime.datetime(args.year, args.month,
                            args.day, args.hour, args.minute)
-    print("Parallactic angle : ", parallactic_angle(
-        args.latitude, args.longitude, dt))
+    parallactic_angle = parallactic_angle(args.latitude, args.longitude, dt)
+    solar_coordinates = solar_coordinates(dt)
+    #print("Parallactic angle : ", parallactic_angle)
+    #print(solar_coordinates)
+    # TODO : EXIF with all data
+    
 
-    print(solar_coordinates(dt))
+    if os.path.isfile(args.image_file) == False:
+        raise RuntimeError("File '%s' doesn't exists" %args.image_file)
+
+    image = Image.open(args.image_file)
+    rotated_image = image.rotate(-(parallactic_angle + solar_coordinates["P"]))
+    rotated_image.save("/imgs/wolfdotsolar/stack/rotate.png", "png")
