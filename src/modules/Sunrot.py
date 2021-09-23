@@ -14,7 +14,7 @@ def parallactic_angle(latitude, longitude, datetime):
     sun = ephem.Sun(observer)
     parallactic_angle = sun.parallactic_angle()
 
-    return math.degrees(parallactic_angle)
+    return -math.degrees(parallactic_angle)
 
 def solar_coordinates(datetime):
     print("TODO")
