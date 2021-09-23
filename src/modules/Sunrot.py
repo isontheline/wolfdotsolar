@@ -94,6 +94,36 @@ def solar_coordinates(datetime):
     }
 
 
+def normalize_solar_picture_angles(image_file, year, month, day, hour, minute, latitude, longitude, mount_type="altazimuth"):
+    dt = datetime.datetime(year, month, day, hour, minute)
+    sc = solar_coordinates(dt)
+    # TODO : Store EXIF with all data
+
+    if os.path.isfile(image_file) == False:
+        raise RuntimeError("File '%s' doesn't exists" % image_file)
+
+    image = Image.open(image_file)
+
+    # P = The position angle between the geocentric north pole and the solar rotational north pole measured eastward from geocentric north.
+    # The range in P is +/- 26.3°.
+    # http://www.jgiesen.de/sunrot/index.html
+    rotation_angle = sc["P"]
+
+    if "altazimuth" == mount_type:
+        # One disadvantage of using an altazimuth telescope mounting is that the cardinal points of the Sun (north, east, south and west) are more difficult to determine than if an equatorial type of mounting were used.
+        # https://www.petermeadows.com/html/parallactic.html
+        pa = parallactic_angle(latitude, longitude, dt)
+        rotation_angle += pa
+
+    rotated_image = image.rotate(-rotation_angle)
+    source_parent_path = os.path.abspath(os.path.join(image_file, os.pardir))
+    source_file_name_split = os.path.splitext(os.path.basename(image_file))
+    destination_file_name = source_file_name_split[0] + "_rotated.png"
+    destination_file_path = os.path.join(
+        source_parent_path, destination_file_name)
+    rotated_image.save(destination_file_path, "png")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("image_file", help="The image to rotate")
@@ -111,19 +141,8 @@ if __name__ == "__main__":
         "-l", "--latitude", help="Latitude of observation", type=float, required=True)
     parser.add_argument(
         "-L", "--longitude", help="Longitude of observation", type=float, required=True)
+    parser.add_argument(
+        "-t", "--mount", help="Mount type (altazimuth, equatorial)", default="altazimuth")
     args = parser.parse_args()
-    dt = datetime.datetime(args.year, args.month,
-                           args.day, args.hour, args.minute)
-    parallactic_angle = parallactic_angle(args.latitude, args.longitude, dt)
-    solar_coordinates = solar_coordinates(dt)
-    #print("Parallactic angle : ", parallactic_angle)
-    #print(solar_coordinates)
-    # TODO : EXIF with all data
-    
-
-    if os.path.isfile(args.image_file) == False:
-        raise RuntimeError("File '%s' doesn't exists" %args.image_file)
-
-    image = Image.open(args.image_file)
-    rotated_image = image.rotate(-(parallactic_angle + solar_coordinates["P"]))
-    rotated_image.save("/imgs/wolfdotsolar/stack/rotate.png", "png")
+    normalize_solar_picture_angles(args.image_file, args.year, args.month, args.day,
+                                   args.hour, args.minute, args.latitude, args.longitude, args.mount)
