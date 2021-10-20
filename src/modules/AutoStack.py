@@ -10,9 +10,9 @@
 import os
 import cv2
 import numpy as np
-from time import time
 from tqdm import tqdm
 import argparse
+import modules.CopyEXIF as CopyEXIF
 
 # Align and stack images with ECC method
 # Slower but more accurate
@@ -158,7 +158,10 @@ def stack_pictures(input_dir, output_image, method="ECC"):
         os.makedirs(parent_dir)
 
     # Saving image :
-    cv2.imwrite(str(output_image), stacked_image)
+    cv2.imwrite(output_image, stacked_image)
+
+    # Copy EXIF of first image file to destination :
+    CopyEXIF.copy_exif(file_list[0], output_image)
 
 
 if __name__ == "__main__":
