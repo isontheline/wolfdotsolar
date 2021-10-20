@@ -2,12 +2,16 @@
 
 import glob
 import argparse
-import modules.FindSunCoordinates as FSC
 import cv2
 import os
 import piexif
 from tqdm import tqdm
 from PIL import Image
+
+try:
+    import modules.FindSunCoordinates as FSC
+except ModuleNotFoundError:
+    import FindSunCoordinates as FSC
 
 def crop_sun_pictures(job_path_pattern, destination="wolfdotsolar", threshold=50, margin=50):
     filenames_list = glob.glob(job_path_pattern)

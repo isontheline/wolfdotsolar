@@ -12,7 +12,11 @@ import cv2
 import numpy as np
 from tqdm import tqdm
 import argparse
-import modules.CopyEXIF as CopyEXIF
+
+try:
+    import modules.CopyEXIF as CopyEXIF
+except ModuleNotFoundError:
+    import CopyEXIF as CopyEXIF
 
 # Align and stack images with ECC method
 # Slower but more accurate

@@ -7,6 +7,11 @@ import datetime
 import argparse
 from PIL import Image
 
+try:
+    import modules.CopyEXIF as CopyEXIF
+except ModuleNotFoundError:
+    import CopyEXIF as CopyEXIF
+
 
 def parallactic_angle(latitude, longitude, datetime):
     observer = ephem.Observer()
@@ -122,6 +127,9 @@ def normalize_solar_picture_angles(image_file, year, month, day, hour, minute, l
     destination_file_path = os.path.join(
         source_parent_path, destination_file_name)
     rotated_image.save(destination_file_path, "png")
+
+    # Copy EXIF of source image file to destination :
+    CopyEXIF.copy_exif(image_file, destination_file_path)
 
 
 if __name__ == "__main__":

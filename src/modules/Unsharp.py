@@ -3,7 +3,11 @@
 import argparse
 import os
 from wand.image import Image
-import modules.CopyEXIF as CopyEXIF
+
+try:
+    import modules.CopyEXIF as CopyEXIF
+except ModuleNotFoundError:
+    import CopyEXIF as CopyEXIF
 
 
 def unsharp(image_file, radius=100, sigma=2, amount=3, threshold=0):
