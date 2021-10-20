@@ -12,7 +12,7 @@ def unsharp(image_file, radius=100, sigma=2, amount=3, threshold=0):
         img.unsharp_mask(radius=radius, sigma=sigma, amount=amount, threshold=threshold)
         source_parent_path=os.path.abspath(os.path.join(image_file, os.pardir))
         source_file_name_split = os.path.splitext(os.path.basename(image_file))
-        destination_file_name = source_file_name_split[0] + "_unsharp.png"
+        destination_file_name = source_file_name_split[0] + "-unsharp.png"
         destination_file_path = os.path.join(source_parent_path, destination_file_name)
         img.save(filename=destination_file_path)
 

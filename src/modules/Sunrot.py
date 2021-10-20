@@ -118,7 +118,7 @@ def normalize_solar_picture_angles(image_file, year, month, day, hour, minute, l
     rotated_image = image.rotate(-rotation_angle)
     source_parent_path = os.path.abspath(os.path.join(image_file, os.pardir))
     source_file_name_split = os.path.splitext(os.path.basename(image_file))
-    destination_file_name = source_file_name_split[0] + "_rotated.png"
+    destination_file_name = source_file_name_split[0] + "-rotated.png"
     destination_file_path = os.path.join(
         source_parent_path, destination_file_name)
     rotated_image.save(destination_file_path, "png")
