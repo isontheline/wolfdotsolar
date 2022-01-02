@@ -13,11 +13,6 @@ import numpy as np
 from tqdm import tqdm
 import argparse
 
-try:
-    import modules.CopyEXIF as CopyEXIF
-except ModuleNotFoundError:
-    import CopyEXIF as CopyEXIF
-
 # Align and stack images with ECC method
 # Slower but more accurate
 
@@ -163,9 +158,6 @@ def stack_pictures(input_dir, output_image, method="ECC"):
 
     # Saving image :
     cv2.imwrite(output_image, stacked_image)
-
-    # Copy EXIF of first image file to destination :
-    CopyEXIF.copy_exif(file_list[0], output_image)
 
 
 if __name__ == "__main__":

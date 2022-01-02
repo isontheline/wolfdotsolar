@@ -4,11 +4,6 @@ import argparse
 import os
 from wand.image import Image
 
-try:
-    import modules.CopyEXIF as CopyEXIF
-except ModuleNotFoundError:
-    import CopyEXIF as CopyEXIF
-
 
 def unsharp(image_file, radius=100, sigma=2, amount=3, threshold=0):
     if os.path.isfile(image_file) == False:
@@ -24,9 +19,6 @@ def unsharp(image_file, radius=100, sigma=2, amount=3, threshold=0):
         destination_file_path = os.path.join(
             source_parent_path, destination_file_name)
         img.save(filename=destination_file_path)
-
-        # Copy EXIF of source image file to destination :
-        CopyEXIF.copy_exif(image_file, destination_file_path)
 
 
 if __name__ == "__main__":

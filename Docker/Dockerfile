@@ -26,8 +26,11 @@ RUN pip3 install focus-stack
 # Install pytz :
 RUN pip3 install pytz
 
-# Install pyephem
+# Install pyephem :
 RUN pip3 install pyephem
+
+# Install ufraw :
+RUN apt-get update && apt-get install -y ufraw
 
 # Setting up locales :
 RUN apt-get update && apt-get install -y locales && locale-gen en_US.UTF-8

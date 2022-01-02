@@ -4,7 +4,6 @@ import glob
 import argparse
 import cv2
 import os
-import piexif
 from tqdm import tqdm
 from PIL import Image
 
@@ -63,12 +62,6 @@ def crop_sun_pictures(job_path_pattern, destination="wolfdotsolar", threshold=50
         crop_img_path = os.path.join(job_path, crop_img_filename)
         # Writing cropped image :
         cv2.imwrite(crop_img_path, crop_img)
-        # Copying EXIF data :
-        im_src = Image.open(file_path)
-        exif_dict = piexif.load(im_src.info["exif"])
-        exif_bytes = piexif.dump(exif_dict)
-        im_dst = Image.open(crop_img_path)
-        im_dst.save(crop_img_path, "png", exif=exif_bytes)
         # Setting creation / modification date on cropped image :
         image_timestamp = os.path.getmtime(file_path)
         os.utime(crop_img_path, (image_timestamp, image_timestamp))

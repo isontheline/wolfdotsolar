@@ -8,6 +8,7 @@ import piexif
 def copy_exif(src_copy, dst_paste):
     # Extract EXIF from source image file :
     im = Image.open(src_copy)
+    print(im.info)
     exif_dict = piexif.load(im.info["exif"])
     exif_bytes = piexif.dump(exif_dict)
 
