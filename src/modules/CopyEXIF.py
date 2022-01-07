@@ -14,7 +14,7 @@ def copy_exif(src_copy, dst_paste):
 
     # Apply EXIF to the destination image :
     im_dst = Image.open(dst_paste)
-    im_dst.save(dst_paste, im.format, exif=exif_bytes)
+    im_dst.save(dst_paste, im_dst.format, exif=exif_bytes)
 
 
 if __name__ == "__main__":
