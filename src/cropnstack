@@ -7,6 +7,7 @@ import pytz
 import modules.CropSun as CropSun
 import modules.AutoStack as AutoStack
 import modules.Unsharp as Unsharp
+import modules.PIMaskGeneration as PIMaskGeneration
 
 parser = argparse.ArgumentParser()
 parser.add_argument("job_pathPattern", help="The directory pattern where your Sun pictures will be cropped and stacked from")
@@ -17,6 +18,7 @@ parser.add_argument("--unsharp_sigma", help="Unsharp sigma", type=int, default=4
 parser.add_argument("--unsharp_amount", help="Unsharp amount", type=int, default=1)
 parser.add_argument("--unsharp_threshold", help="Unsharp threshold", type=int, default=0)
 parser.add_argument("--timezone", help="Timezone used for date processing", default="UTC")
+parser.add_argument("--pimask", help="Create a Pixinsight mask about the Solar limb", type=bool, default=False)
 args = parser.parse_args()
 
 filenames_list = glob.glob(args.job_pathPattern)
@@ -36,3 +38,7 @@ AutoStack.stack_pictures("/imgs/wolfdotsolar/crop/", "/imgs/wolfdotsolar/stack/"
 
 # Unsharping picture :
 Unsharp.unsharp("/imgs/wolfdotsolar/stack/" + stack_filename, 100, 2, 3, 0)
+
+# Creating Pixinsight mask if wanted :
+if args.pimask:
+    PIMaskGeneration.createPIMask("/imgs/wolfdotsolar/stack/" + stack_filename)

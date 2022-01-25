@@ -27,8 +27,6 @@ def createPIMask(image_file, threshold=50):
         image_file=image_file, threshold=threshold)
     im = Image.new('L', imSource.size, "black")
     draw = ImageDraw.Draw(im)
-    print(center)
-    print(radius)
     shape = [(center[0] - radius, center[1] - radius),
              (center[0] + radius, center[1] + radius)]
     draw.ellipse(shape, fill="white", outline="black", width=8)

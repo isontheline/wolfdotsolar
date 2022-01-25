@@ -11,6 +11,12 @@ Solar Observation Processing Pipeline
 docker run --rm -v /folder/with/sun/pictures/:/imgs isontheline/wolfdotsolar:edge cropnstack "/imgs/*.JPG"
 ```
 
+## 2.1. Optional parameters
+| Parameter Name | Parameter Value | Description | Example |
+| --- | --- | --- | --- |
+| timezone | A valid timezone string | Ability to define the timezone | `--timezone="Europe/Paris"` |
+| pimask | Boolean | Create a [Pixinsight](https://pixinsight.com/) [mask](https://pixinsight.com.ar/en/results.html?q=mask) about the Solar limb | `--pimask=true` |
+
 ## 3. Examples of Results
 | Sunspots May 10, 2021 | Solar Eclipse June 10, 2021 | Sunspots September 5, 2021 |
 | --- | --- | --- |
