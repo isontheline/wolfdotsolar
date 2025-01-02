@@ -2,9 +2,11 @@ name: buildx
 on:
   workflow_dispatch:
   pull_request:
-    branches: master
+    branches: 
+      - master
   push:
-    branches: master
+    branches: 
+      - master
     tags:
       - v*
 jobs:

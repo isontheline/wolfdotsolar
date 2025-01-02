@@ -6,6 +6,7 @@ import datetime
 import pytz
 import modules.CropSun as CropSun
 import modules.AutoStack as AutoStack
+import modules.Sharp as Sharp
 import modules.Unsharp as Unsharp
 import modules.PIMaskGeneration as PIMaskGeneration
 
@@ -33,11 +34,17 @@ cs_info = CropSun.crop_sun_pictures(args.job_pathPattern, "wolfdotsolar/crop")
 dt_average = datetime.datetime.fromtimestamp(cs_info["AverageTimestamp"], datetime.timezone.utc)
 dt_tz = pytz.timezone(args.timezone)
 dt_average_tz = dt_average.astimezone(dt_tz)
-stack_filename = dt_average_tz.strftime("%Y%m%d-%H%M") + ".png"
+str_time = dt_average_tz.strftime("%Y%m%d-%H%M")
+stack_filename = str_time + ".png"
 AutoStack.stack_pictures("/imgs/wolfdotsolar/crop/", "/imgs/wolfdotsolar/stack/" + stack_filename, "ECC")
 
-# Unsharping picture :
-Unsharp.unsharp("/imgs/wolfdotsolar/stack/" + stack_filename, 100, 2, 3, 0)
+# Unsharp picture :
+unsharp_filename = str_time + "-unsharp.png"
+Unsharp.unsharp("/imgs/wolfdotsolar/stack/" + stack_filename, "/imgs/wolfdotsolar/stack/" + unsharp_filename, 100, 2, 3, 0)
+
+# Sharp picture :
+sharp_filename = str_time + "-sharp.png"
+Sharp.sharp("/imgs/wolfdotsolar/stack/" + unsharp_filename, "/imgs/wolfdotsolar/stack/" + sharp_filename)
 
 # Creating Pixinsight mask if wanted :
 if args.pimask:
