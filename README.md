@@ -18,7 +18,7 @@ docker run --rm -v /folder/with/sun/pictures/:/imgs isontheline/wolfdotsolar:edg
 | pimask | Boolean | Create a [Pixinsight](https://pixinsight.com/) [mask](https://pixinsight.com.ar/en/results.html?q=mask) about the Solar limb | `--pimask=true` |
 
 ## 3. Examples of Results
-| Sunspots May 10, 2021 | Solar Eclipse June 10, 2021 | Sunspots September 5, 2021 |
+| Sunspots May 10, 2021 | Solar Eclipse June 10, 2021 | Sunspots September 5, 2021 | Sunspots December 31, 2024 |
 | --- | --- | --- | --- |
 | ![Sun Cropped and Stacked with wolfdotsolar](./samples/sun-cropped-and-stacked-with-wolfdotsolar.jpg) | ![Solar Eclipse June 10, 2021 at Arnac-Pompadour](./samples/solar-eclipse-20210610-0950-arnac-pompadour-france.jpg) | ![September sunspots cropped and stacked with wolfdotsolar](./samples/september-sunspots-20210905_0920.jpg) | ![December 2024 sunspots cropped and stacked with wolfdotsolar](./samples/december-sunspots-20241231-1115-unsharp-pi.jpg) |
 
